@@ -113,11 +113,13 @@ class CryptoSignalBot:
         init_db()
 
         await notify(
-            "🤖 <b>Crypto Signal Bot started</b>\n"
+            f🤖 <b>Crypto Signal Bot started</b>\n"
+            f"Run: #{bot_state.state['runs_count'] + 1}\n"
             f"Mode: {'🧪 DRY RUN' if DRY_RUN else '🔴 LIVE TRADING'}\n"
-            f"Testnet: {BINANCE_TESTNET}"
+            f"Testnet: {BINANCE_TESTNET}\n"
+            f"History Limit: {HISTORY_LIMIT}"
         )
-
+        
         # Engine1 is the event driver — blocks until Telegram disconnects
         await self.engine1.start()
 
