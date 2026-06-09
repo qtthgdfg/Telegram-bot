@@ -270,16 +270,20 @@ class Engine1Telegram:
         await engine1.start()
     The callback receives a list[RawSignal] ready for Engine 2.
     """
-
-    def __init__(self, on_signals: Callable[[List[RawSignal]], Any]):
-        self.on_signals   = on_signals
-        self.client       = TelegramClient(
-            TELEGRAM_SESSION_FILE, TELEGRAM_API_ID, TELEGRAM_API_HASH
-        )
-        self.sentiment    = SentimentWindow()
-        self._seen_ids: Dict[str, set] = {}
-        self._running     = False
-
+    
+    def __init__(self, on_signals: Callable[[List[RawSignal]], Any],
+                 history_limit: int = 5000, last_message_id: int = 0):
+       self.on_signals     = on_signals
+       self.history_limit  = history_limit       # ⬅️ NEW
+       self.last_message_id = last_message_id    # ⬅️ NEW
+       self.client         = TelegramClient(
+           TELEGRAM_SESSION_FILE, TELEGRAM_API_ID, TELEGRAM_API_HASH
+       )
+       self.sentiment      = SentimentWindow()
+       self._seen_ids: Dict[str, set] = {}
+       self._running       = False
+    
+    
     # ── Connection ─────────────────────────────────────────────────
 
     async def start(self) -> None:
