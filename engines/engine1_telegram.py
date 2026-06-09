@@ -43,7 +43,7 @@ KNOWN_SYMBOLS = {
     "THETA","GRT","IOTA","NEO","WAVES","ZEC","DASH","XMR","BCH","BSV",
     "TRX","XTZ","KSM","RUNE","INJ","SUI","SEI","TIA","BLUR","PEPE",
     "FLOKI","SHIB","BONE","LUNC","LUNA","UST","ROSE","CFX","MAGIC",
-    "GMX","GNS","DYDX","PERP","RDNT","WLD","PYTH","JTO","MEME","ORDI",
+    "GMX","GNS","DYDX","PERP","RDNT"asyncH","JTO","MEME","ORDI",
     "SATS","RATS","BOME","WIF","BONK","JUP","TNSR","STRK","ETHFI",
     "REZ","BB","NOT","IO","ZK","LISTA","ZRO","BANANA","DOGS","HMSTR",
     "CATI","MAJOR","1000SHIB","1000PEPE","1000BONK","1000FLOKI",
@@ -333,8 +333,8 @@ class Engine1Telegram:
 
         for entity in self._channels:
             ch_name = getattr(entity, "username", str(entity.id)) or str(entity.id)
-            async = 0
-            count for msg in self.client.iter_messages(
+            count = 0
+            async for msg in self.client.iter_messages(
                 entity, limit=self.history_limit, min_id=self.last_message_id
             ):
                 if not isinstance(msg, Message) or not msg.text:
