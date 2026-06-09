@@ -1,0 +1,23 @@
+# ─── Core async & HTTP ─────────────────────────────────────────────
+aiohttp>=3.9.0
+asyncio-throttle>=1.0.2
+
+# ─── Telegram ──────────────────────────────────────────────────────
+telethon>=1.34.0
+
+# ─── Data & Numerics ───────────────────────────────────────────────
+numpy>=1.26.0
+pandas>=2.1.0
+
+# ─── Crypto exchange ───────────────────────────────────────────────
+# (BinanceClient uses raw aiohttp — no python-binance dependency)
+
+# ─── Database ──────────────────────────────────────────────────────
+# (uses stdlib sqlite3 — no extra package needed)
+
+# ─── Configuration ─────────────────────────────────────────────────
+python-dotenv>=1.0.0
+
+# ─── Utilities ─────────────────────────────────────────────────────
+cryptography>=42.0.0        # Telethon session encryption
+pytz>=2024.1
