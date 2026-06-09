@@ -1,0 +1,114 @@
+name: Crypto Signal Bot 24/7 with State Handoff
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */5 * * *'  # Every 5 hours
+  push:
+    branches: [main]
+
+jobs:
+  bot-runner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout with state
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Load previous state
+        id: state
+        run: |
+          if [ -f bot_state.json ]; then
+            echo "📂 Previous state found!"
+            cat bot_state.json | python -m json.tool
+            echo "RESTART=true" >> $GITHUB_ENV
+          else
+            echo "🆕 Fresh start!"
+            echo "RESTART=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create .env file
+        run: |
+          if [ "$RESTART" = "true" ]; then
+            HISTORY_LIMIT=50
+          else
+            HISTORY_LIMIT=5000
+          fi
+          
+          cat > .env << 'ENVEOF'
+          TELEGRAM_API_ID=${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH=${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_PHONE=${{ secrets.TELEGRAM_PHONE }}
+          TELEGRAM_CHANNELS=${{ secrets.TELEGRAM_CHANNELS }}
+          TELEGRAM_HISTORY_LIMIT=${HISTORY_LIMIT}
+          TELEGRAM_HISTORY_LIMIT_RESTART=50
+          BINANCE_API_KEY=${{ secrets.BINANCE_API_KEY }}
+          BINANCE_API_SECRET=${{ secrets.BINANCE_API_SECRET }}
+          BINANCE_TESTNET=true
+          NOTIFY_TELEGRAM_BOT_TOKEN=${{ secrets.NOTIFY_TELEGRAM_BOT_TOKEN }}
+          NOTIFY_TELEGRAM_CHAT_ID=${{ secrets.NOTIFY_TELEGRAM_CHAT_ID }}
+          NOTIFY_DISCORD_WEBHOOK=${{ secrets.NOTIFY_DISCORD_WEBHOOK }}
+          DRY_RUN=true
+          LOG_LEVEL=INFO
+          ENVEOF
+
+      - name: Run bot with handoff
+        run: |
+          echo "🤖 Starting bot..."
+          python main.py
+          
+          # Save final state
+          echo "💾 Saving final state for next run..."
+
+      - name: Commit state for next run
+        if: always()
+        run: |
+          if [ -f bot_state.json ]; then
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            
+            # Pull latest to avoid conflicts
+            git pull --rebase
+            
+            # Stage state and logs
+            git add bot_state.json logs/ *.log 2>/dev/null || true
+            
+            # Only commit if changes exist
+            if git diff --staged --quiet; then
+              echo "No state changes to commit"
+            else
+              git commit -m "🔄 State handoff: $(date -u +'%Y-%m-%d %H:%M UTC')"
+              git push
+              echo "✅ State saved for next run!"
+            fi
+          fi
+
+      - name: Upload logs artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: bot-logs-run-${{ github.run_number }}
+          path: |
+            logs/
+            bot_state.json
+            *.log
+          retention-days: 7
