@@ -1,4 +1,4 @@
-"""
+fromrom""
 ╔══════════════════════════════════════════════════════════════════╗
 ║  CRYPTO SIGNAL BOT — Main Orchestrator                           ║
 ║                                                                  ║
@@ -30,7 +30,8 @@ from utils.database  import init_db
 from utils.logger    import get_logger
 from utils.notifier  import notify
 from models.signal   import RawSignal, AnalyzedSignal, RiskAssessedSignal
-
+# ═══ NEW: State management ═══
+from utils.state_manager import bot_state
 log = get_logger("Main")
 
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
