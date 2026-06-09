@@ -327,15 +327,15 @@ class Engine1Telegram:
     # ── Historical scan ────────────────────────────────────────────
 
     async def _scan_history(self) -> None:
-        log.info("Scanning message history (limit=%d per channel) …",
-                 TELEGRAM_HISTORY_LIMIT)
+        log.info("Scanning message history (limit=%d, min_id=%d) …",
+                 self.history_limit, self.last_message_id)
         all_signals: List[RawSignal] = []
 
         for entity in self._channels:
             ch_name = getattr(entity, "username", str(entity.id)) or str(entity.id)
-            count = 0
-            async for msg in self.client.iter_messages(
-                entity, limit=TELEGRAM_HISTORY_LIMIT
+            async = 0
+            count for msg in self.client.iter_messages(
+                entity, limit=self.history_limit, min_id=self.last_message_id
             ):
                 if not isinstance(msg, Message) or not msg.text:
                     continue
