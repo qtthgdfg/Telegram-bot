@@ -202,10 +202,14 @@ async def _main() -> None:
             pass  # Windows
 
     await bot.start()
-
+    
 
 if __name__ == "__main__":
     import os
     os.makedirs("data", exist_ok=True)
     os.makedirs("logs", exist_ok=True)
+    
+    # ═══ NEW: Show state on startup ═══
+    log.info("State summary: %s", bot_state.get_summary())
+    
     asyncio.run(_main())
