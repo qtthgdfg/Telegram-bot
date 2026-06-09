@@ -49,10 +49,10 @@ class CryptoSignalBot:
         self.engine3 = Engine3Risk(on_signal=self._on_risk_signal)
         self.engine2 = Engine2Analyzer(on_signal=self._on_analyzed_signal)
         self.engine1 = Engine1Telegram(
-        on_signals=self._on_raw_signals,
-        history_limit=HISTORY_LIMIT,
-        last_message_id=bot_state.get_last_message_id()
-        )
+            on_signals=self._on_raw_signals,
+            history_limit=HISTORY_LIMIT,
+            last_message_id=bot_state.get_last_message_id()
+        )  
     # ── Engine 1 → Engine 2 ────────────────────────────────────────
 
     async def _on_raw_signals(self, raw_signals: List[RawSignal]) -> None:
