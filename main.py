@@ -56,9 +56,21 @@ class CryptoSignalBot:
     # ── Engine 1 → Engine 2 ────────────────────────────────────────
 
     async def _on_raw_signals(self, raw_signals: List[RawSignal]) -> None:
-        log.info("📩 Engine1 → Engine2: %d raw signals", len(raw_signals))
-        await self.engine2.process(raw_signals)
-
+    # ═══ NEW: Filter already-processed signals ═══
+    new_signals = []
+    for sig in raw_signals:
+        if not bot_state.is_signal_processed({"id": sig.message_id}):
+            new_signals.append(sig)
+            bot_state.add_signal({"id": sig.message_id})
+    
+    if not new_signals:
+        log.info("📩 No new signals to process")
+        return
+    
+    log.info("📩 Engine1 → Engine2: %d new signals (skipped %d duplicates)",
+             len(new_signals), len(raw_signals) - len(new_signals))
+    await self.engine2.process(new_signals)
+    
     # ── Engine 2 → Engine 3 ────────────────────────────────────────
 
     async def _on_analyzed_signal(self, sig: AnalyzedSignal) -> None:
