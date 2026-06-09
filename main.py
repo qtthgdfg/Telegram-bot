@@ -88,6 +88,9 @@ class CryptoSignalBot:
         log.info("✅ Engine3 → Engine4: %s %s  qty=%.4f  lev=%dx",
                  sig.symbol, sig.direction, sig.position_size_qty, sig.leverage)
 
+        # ═══ NEW: Track trade ═══
+        bot_state.record_trade(success=True)
+
         if DRY_RUN:
             log.info("🧪 DRY RUN — skipping live execution for %s", sig.symbol)
             _log_dry_run(sig)
