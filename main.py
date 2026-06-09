@@ -122,15 +122,20 @@ class CryptoSignalBot:
         
         # Engine1 is the event driver — blocks until Telegram disconnects
         await self.engine1.start()
-
+        
     async def stop(self) -> None:
         log.info("Bot shutting down …")
+    
+        # ═══ NEW: Save state before stopping ═══
+        log.info(bot_state.get_summary())
+        bot_state.save_state()
+    
         await self.engine1.stop()
         await self.engine2.close()
         await self.engine3.close()
         await self.engine4.close()
-        await notify("🛑 Crypto Signal Bot stopped")
-
+        await notify("🛑 Crypto Signal Bot stopped\n" + bot_state.get_summary())
+    
 
 # ══════════════════════════════════════════════════════════════════
 # HELPERS
