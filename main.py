@@ -101,13 +101,13 @@ class CryptoSignalBot:
     # ── Lifecycle ──────────────────────────────────────────────────
 
     async def start(self) -> None:
-    log.info("=" * 60)
-    log.info(" CRYPTO SIGNAL BOT STARTING")
-    log.info(" Run #%d | History Limit: %d | First Run: %s",
-             bot_state.state["runs_count"] + 1,
-             HISTORY_LIMIT,
-             bot_state.state["first_run"])
-    log.info("=" * 60)
+        log.info("=" * 60)
+        log.info(" CRYPTO SIGNAL BOT STARTING")
+        log.info(" Run #%d | History Limit: %d | First Run: %s",
+                 bot_state.state["runs_count"] + 1,
+                 HISTORY_LIMIT,
+                 bot_state.state["first_run"])
+        log.info("=" * 60)
     
         _check_config()
         init_db()
