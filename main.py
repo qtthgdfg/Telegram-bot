@@ -35,7 +35,7 @@ from utils.state_manager import bot_state
 log = get_logger("Main")
 
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
-
+HISTORY_LIMIT = int(os.getenv("TELEGRAM_HISTORY_LIMIT", 5000))
 
 # ══════════════════════════════════════════════════════════════════
 # PIPELINE ASSEMBLY
