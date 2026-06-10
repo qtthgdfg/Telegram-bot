@@ -73,6 +73,17 @@ jobs:
           LOG_LEVEL=INFO
           ENVEOF
 
+      - name: Restore Telegram session from secret
+        run: |
+          if [ ! -z "${{ secrets.TELEGRAM_SESSION_B64 }}" ]; then
+            mkdir -p data
+            echo "${{ secrets.TELEGRAM_SESSION_B64 }}" | base64 -d > data/telegram_session
+            echo "✅ Session restored from secret"
+          else
+            echo "⚠️  TELEGRAM_SESSION_B64 secret not set yet"
+            echo "Please run setup_session.py locally first and add the secret"
+          fi
+
       - name: Run bot with handoff
         run: |
           echo "🤖 Starting bot..."
@@ -80,6 +91,44 @@ jobs:
           
           # Save final state
           echo "💾 Saving final state for next run..."
+
+      - name: Generate base64 session string (if created)
+        if: always()
+        run: |
+          mkdir -p session_artifacts
+          
+          if [ -f data/telegram_session ]; then
+            echo "✅ Session file found!"
+            
+            # Generate base64 encoded session
+            SESSION_B64=$(base64 -w 0 data/telegram_session)
+            
+            # Save to file for easy copying
+            echo "$SESSION_B64" > session_artifacts/TELEGRAM_SESSION_B64.txt
+            
+            echo "📝 Session base64 generated and saved"
+            echo "Base64 length: ${#SESSION_B64} characters"
+            
+            echo ""
+            echo "════════════════════════════════════════════════════════"
+            echo "🎯 TELEGRAM SESSION BASE64"
+            echo "════════════════════════════════════════════════════════"
+            cat session_artifacts/TELEGRAM_SESSION_B64.txt
+            echo ""
+            echo "════════════════════════════════════════════════════════"
+          else
+            echo "ℹ️  No session file found (this is expected on first run)"
+            echo "Session file: data/telegram_session"
+          fi
+
+      - name: Upload session artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: telegram-session-setup-${{ github.run_number }}
+          path: |
+            session_artifacts/
+          retention-days: 30
 
       - name: Commit state for next run
         if: always()
