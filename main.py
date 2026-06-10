@@ -1,16 +1,4 @@
-fromrom""
-╔══════════════════════════════════════════════════════════════════╗
-║  CRYPTO SIGNAL BOT — Main Orchestrator                           ║
-║                                                                  ║
-║  Pipeline:                                                       ║
-║  Telegram → Engine1 → Engine2 → Engine3 → Engine4 → Binance     ║
-║                                     ↑                            ║
-║                               Engine5 (called by E2)            ║
-║                                                                  ║
-║  Usage:  python main.py                                          ║
-║  Dry-run: DRY_RUN=true python main.py                            ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
+
 
 import asyncio
 import os
