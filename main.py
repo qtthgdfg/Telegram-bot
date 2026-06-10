@@ -25,9 +25,9 @@ log = get_logger("Main")
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 HISTORY_LIMIT = int(os.getenv("TELEGRAM_HISTORY_LIMIT", 5000))
 
-# ══════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
 # PIPELINE ASSEMBLY
-# ══════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
 
 class CryptoSignalBot:
 
@@ -101,7 +101,7 @@ class CryptoSignalBot:
         init_db()
 
         await notify(
-            f🤖 <b>Crypto Signal Bot started</b>\n"
+            f"🤖 <b>Crypto Signal Bot started</b>\n"
             f"Run: #{bot_state.state['runs_count'] + 1}\n"
             f"Mode: {'🧪 DRY RUN' if DRY_RUN else '🔴 LIVE TRADING'}\n"
             f"Testnet: {BINANCE_TESTNET}\n"
@@ -125,9 +125,9 @@ class CryptoSignalBot:
         await notify("🛑 Crypto Signal Bot stopped\n" + bot_state.get_summary())
     
 
-# ══════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
 # HELPERS
-# ══════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
 
 def _check_config() -> None:
     errors = []
@@ -171,9 +171,9 @@ def _log_dry_run(sig: RiskAssessedSignal) -> None:
     )
 
 
-# ══════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
 # ENTRY POINT
-# ══════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
 
 async def _main() -> None:
     bot = CryptoSignalBot()
