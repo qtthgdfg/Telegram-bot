@@ -1,10 +1,4 @@
-"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ENGINE 5 — Professional Indicators Library                      ║
-║  1 000+ indicators across 15 categories                          ║
-║  Pure numpy/pandas — zero TA-Lib dependency                      ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
+"
 
 import numpy as np
 import pandas as pd
