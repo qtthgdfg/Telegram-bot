@@ -11,15 +11,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# ─── Telegram ────────────────────────────────────────────────────────────────
+# ─── Telegram ──────────────────────────────────────────────────────────
 TELEGRAM_API_ID        = int(os.getenv("TELEGRAM_API_ID", "0"))
 TELEGRAM_API_HASH      = os.getenv("TELEGRAM_API_HASH", "")
 TELEGRAM_PHONE         = os.getenv("TELEGRAM_PHONE", "")
 TELEGRAM_SESSION_FILE  = "data/telegram_session"
 TELEGRAM_CHANNELS      = os.getenv("TELEGRAM_CHANNELS", "").split(",")   # comma-separated usernames/IDs
-TELEGRAM_HISTORY_LIMIT = int(os.getenv("TELEGRAM_HISTORY_LIMIT", "5000"))  # messages to scan on first run
+TELEGRAM_HISTORY_LIMIT = int(os.getenv("TELEGRAM_HISTORY_LIMIT") or "5000")  # messages to scan on first run
 
-# ─── Binance ─────────────────────────────────────────────────────────────────
+# ─── Binance ──────────────────────────────────────────────────────────
 BINANCE_API_KEY        = os.getenv("BINANCE_API_KEY", "")
 BINANCE_API_SECRET     = os.getenv("BINANCE_API_SECRET", "")
 BINANCE_TESTNET        = os.getenv("BINANCE_TESTNET", "true").lower() == "true"
@@ -68,14 +68,14 @@ E5_ATR_PERIOD   = 14
 E5_BBANDS_STD   = 2.0
 E5_VOLUME_MA    = 20
 
-# ─── Database ────────────────────────────────────────────────────────────────
+# ─── Database ──────────────────────────────────────────────────────────
 DB_PATH = "data/signals.db"
 
-# ─── Logging ─────────────────────────────────────────────────────────────────
+# ─── Logging ──────────────────────────────────────────────────────────
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 LOG_FILE  = "logs/bot.log"
 
-# ─── Notifications ───────────────────────────────────────────────────────────
+# ─── Notifications ────────────────────────────────────────────────────
 NOTIFY_TELEGRAM_BOT_TOKEN  = os.getenv("NOTIFY_TELEGRAM_BOT_TOKEN", "")
 NOTIFY_TELEGRAM_CHAT_ID    = os.getenv("NOTIFY_TELEGRAM_CHAT_ID", "")
 NOTIFY_DISCORD_WEBHOOK      = os.getenv("NOTIFY_DISCORD_WEBHOOK", "")
