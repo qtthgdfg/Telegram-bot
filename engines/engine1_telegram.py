@@ -2,6 +2,8 @@
 
 import re
 import asyncio
+import os
+import sys
 from datetime import datetime, timezone
 from typing import List, Optional, Dict, Callable, Any
 
@@ -279,7 +281,48 @@ class Engine1Telegram:
 
     async def start(self) -> None:
         log.info("Engine 1 starting — connecting to Telegram …")
-        await self.client.start(phone=TELEGRAM_PHONE)
+        
+        # Check if running in CI environment
+        is_ci = os.getenv('GITHUB_ACTIONS') == 'true'
+        
+        try:
+            # Try to connect with existing session
+            await self.client.connect()
+            is_authorized = await self.client.is_user_authorized()
+            
+            if not is_authorized:
+                if is_ci:
+                    # In CI environment without valid session
+                    log.error("❌ Not authenticated in CI environment")
+                    log.error("Please run the bot locally first to set up session file: %s", TELEGRAM_SESSION_FILE)
+                    raise RuntimeError(
+                        f"Telegram session not authenticated. "
+                        f"Run bot locally to authenticate, then commit the session file."
+                    )
+                else:
+                    # Interactive environment - start normal auth flow
+                    log.info("Starting interactive authentication...")
+                    await self.client.start(phone=TELEGRAM_PHONE)
+            else:
+                log.info("✅ Using existing Telegram session")
+                
+        except EOFError:
+            # Handle EOF when input() is called in non-interactive environment
+            if is_ci:
+                log.error("❌ Cannot authenticate in CI environment (non-interactive)")
+                log.error("Session file missing or invalid: %s", TELEGRAM_SESSION_FILE)
+                raise RuntimeError(
+                    "Telegram authentication failed in CI. "
+                    "Ensure bot is authenticated locally and session file is committed."
+                )
+            else:
+                raise
+        except Exception as e:
+            log.error("Connection error: %s", e)
+            if is_ci:
+                log.error("In CI environment, ensure session file exists and is valid")
+            raise
+        
         log.info("Telegram session active")
 
         # Resolve channels
@@ -383,7 +426,7 @@ class Engine1Telegram:
         except Exception as e:
             log.error("Engine 1 emit error: %s", e, exc_info=True)
 
-    # ── Utility ──────��─────────────────────────────────────────────
+    # ── Utility ──────────────────────────────────────────────────
 
     def get_channel_sentiment(self) -> Dict[str, str]:
         return {
