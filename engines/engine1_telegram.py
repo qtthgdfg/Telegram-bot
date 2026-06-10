@@ -1,13 +1,4 @@
-"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ENGINE 1 — Telegram Intelligence Engine                         ║
-║  • Connects to Telegram via Telethon                             ║
-║  • Scans all historical + live messages                          ║
-║  • NLP signal extraction (symbol, direction, entry, SL, TPs)    ║
-║  • Sentiment scoring + confidence weighting                      ║
-║  • Passes structured RawSignal list → Engine 2                   ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
+
 
 import re
 import asyncio
