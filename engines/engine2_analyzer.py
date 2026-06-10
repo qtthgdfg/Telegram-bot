@@ -1,15 +1,4 @@
-"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ENGINE 2 — Deep Market Analysis Engine                          ║
-║  • Receives RawSignal list from Engine 1                         ║
-║  • Fetches OHLCV across 6 timeframes                             ║
-║  • Runs Engine 5 indicators on every timeframe                   ║
-║  • Multi-timeframe confluence scoring                            ║
-║  • Volume confirmation, trend alignment, market context          ║
-║  • Deduplicates & ranks signals by overall_confidence            ║
-║  • Emits AnalyzedSignal → Engine 3                               ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
+
 
 import asyncio
 from datetime import datetime
