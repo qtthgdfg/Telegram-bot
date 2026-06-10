@@ -1,18 +1,4 @@
-"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ENGINE 4 — Trade Optimizer & Execution Engine                   ║
-║  • Reviews RiskAssessedSignal from Engine 3                      ║
-║  • Applies ML-style upgrades before execution                    ║
-║  • Order book liquidity analysis                                 ║
-║  • Smart entry (LIMIT vs MARKET vs scaled)                       ║
-║  • Slippage estimation & adjustment                              ║
-║  • Trailing stop upgrade                                         ║
-║  • Iceberg order splitting for large positions                   ║
-║  • Final execution on Binance Futures                            ║
-║  • SL + multi-TP OCO ladder placement                            ║
-║  • Position monitor loop (SL trail, partial TP)                  ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
+
 
 import asyncio
 from datetime import datetime
