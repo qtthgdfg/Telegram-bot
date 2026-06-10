@@ -25,9 +25,9 @@ log = get_logger("Main")
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 HISTORY_LIMIT = int(os.getenv("TELEGRAM_HISTORY_LIMIT", 5000))
 
-# ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════
 # PIPELINE ASSEMBLY
-# ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════
 
 class CryptoSignalBot:
 
@@ -44,21 +44,21 @@ class CryptoSignalBot:
     # ── Engine 1 → Engine 2 ────────────────────────────────────────
 
     async def _on_raw_signals(self, raw_signals: List[RawSignal]) -> None:
-    # ═══ NEW: Filter already-processed signals ═══
-    new_signals = []
-    for sig in raw_signals:
-        if not bot_state.is_signal_processed({"id": sig.message_id}):
-            new_signals.append(sig)
-            bot_state.add_signal({"id": sig.message_id})
-    
-    if not new_signals:
-        log.info("📩 No new signals to process")
-        return
-    
-    log.info("📩 Engine1 → Engine2: %d new signals (skipped %d duplicates)",
-             len(new_signals), len(raw_signals) - len(new_signals))
-    await self.engine2.process(new_signals)
-    
+        # ═══ NEW: Filter already-processed signals ═══
+        new_signals = []
+        for sig in raw_signals:
+            if not bot_state.is_signal_processed({"id": sig.message_id}):
+                new_signals.append(sig)
+                bot_state.add_signal({"id": sig.message_id})
+        
+        if not new_signals:
+            log.info("📩 No new signals to process")
+            return
+        
+        log.info("📩 Engine1 → Engine2: %d new signals (skipped %d duplicates)",
+                 len(new_signals), len(raw_signals) - len(new_signals))
+        await self.engine2.process(new_signals)
+        
     # ── Engine 2 → Engine 3 ────────────────────────────────────────
 
     async def _on_analyzed_signal(self, sig: AnalyzedSignal) -> None:
@@ -125,9 +125,9 @@ class CryptoSignalBot:
         await notify("🛑 Crypto Signal Bot stopped\n" + bot_state.get_summary())
     
 
-# ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════
 # HELPERS
-# ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════
 
 def _check_config() -> None:
     errors = []
@@ -171,9 +171,9 @@ def _log_dry_run(sig: RiskAssessedSignal) -> None:
     )
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════
 # ENTRY POINT
-# ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════
 
 async def _main() -> None:
     bot = CryptoSignalBot()
