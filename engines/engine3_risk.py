@@ -1,22 +1,4 @@
-"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ENGINE 3 — Risk Management Engine                               ║
-║  ACCOUNT PROTECTION FIRST — trade second                         ║
-║                                                                  ║
-║  Rules enforced:                                                 ║
-║  • Max % of account at risk per trade                            ║
-║  • Max total portfolio exposure                                  ║
-║  • Max single position size                                      ║
-║  • Daily loss circuit-breaker                                    ║
-║  • Max drawdown circuit-breaker                                  ║
-║  • Minimum R:R ratio gate                                        ║
-║  • ATR-derived SL validation                                     ║
-║  • Kelly Criterion position sizing (fractional)                  ║
-║  • Max concurrent open trades                                    ║
-║  • Correlation filter (no duplicate sector exposure)             ║
-║  • Leverage cap per volatility regime                            ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
+
 
 import asyncio
 from datetime import datetime
