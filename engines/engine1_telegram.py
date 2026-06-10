@@ -21,9 +21,9 @@ from utils.database import save_raw_signal
 log = get_logger("Engine1-Telegram")
 
 
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 # KNOWN CRYPTO SYMBOLS (top 200+)
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 
 KNOWN_SYMBOLS = {
     "BTC","ETH","BNB","SOL","XRP","ADA","DOGE","AVAX","DOT","MATIC",
@@ -34,7 +34,7 @@ KNOWN_SYMBOLS = {
     "THETA","GRT","IOTA","NEO","WAVES","ZEC","DASH","XMR","BCH","BSV",
     "TRX","XTZ","KSM","RUNE","INJ","SUI","SEI","TIA","BLUR","PEPE",
     "FLOKI","SHIB","BONE","LUNC","LUNA","UST","ROSE","CFX","MAGIC",
-    "GMX","GNS","DYDX","PERP","RDNT"asyncH","JTO","MEME","ORDI",
+    "GMX","GNS","DYDX","PERP","RDNT","JTO","MEME","ORDI",
     "SATS","RATS","BOME","WIF","BONK","JUP","TNSR","STRK","ETHFI",
     "REZ","BB","NOT","IO","ZK","LISTA","ZRO","BANANA","DOGS","HMSTR",
     "CATI","MAJOR","1000SHIB","1000PEPE","1000BONK","1000FLOKI",
@@ -43,9 +43,9 @@ KNOWN_SYMBOLS = {
 QUOTE_CURRENCIES = {"USDT","USDC","BUSD","BTC","ETH","BNB"}
 
 
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 # SIGNAL EXTRACTION PATTERNS
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 
 # Direction
 RE_LONG  = re.compile(
@@ -223,9 +223,9 @@ def parse_message(msg_text: str, channel: str,
     )
 
 
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 # SENTIMENT WINDOW TRACKER
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 
 class SentimentWindow:
     """Tracks rolling sentiment across last N messages per channel."""
@@ -250,9 +250,9 @@ class SentimentWindow:
         return "NEUTRAL"
 
 
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 # ENGINE 1 — MAIN CLASS
-# ══════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 
 class Engine1Telegram:
     """
@@ -383,7 +383,7 @@ class Engine1Telegram:
         except Exception as e:
             log.error("Engine 1 emit error: %s", e, exc_info=True)
 
-    # ── Utility ────────────────────────────────────────────────────
+    # ── Utility ──────��─────────────────────────────────────────────
 
     def get_channel_sentiment(self) -> Dict[str, str]:
         return {
